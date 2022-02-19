@@ -1,9 +1,8 @@
 // create variable to hold db connection
 let db;
-// establish a connection to IndexDB database called 'budget-tracker' and set to version 1
+// establish a connection to IndexDB 
 const request = indexedDB.open('budget', 1);
 
-// this event will emit if the database version changes (nonexistant to version 1, v1 to v2, etc.)
 request.onupgradeneeded = function(event) {
     // save a reference to the database
     const db = event.target.result;
@@ -13,9 +12,7 @@ request.onupgradeneeded = function(event) {
 
 // upon success
 request.onsuccess = function(event) {
-    //when db is successfully created with its object store
     db = event.target.result;
-
     //check if app is online
     if (navigator.online) {
         checkDatabase();
@@ -23,7 +20,6 @@ request.onsuccess = function(event) {
 };
 
 request.onerror = function(event) {
-    //log error
     console.log(event.target.errorCode);
 };
 
@@ -48,7 +44,7 @@ function checkDatabase() {
     const getAll = budgetObjectStore.getAll();
 
     getAll.onsuccess = function() {
-        // if there was data in indexedDb's store, let's send it to the api server
+        // if there was data in indexedDb's store, send it to the api server
         if (getAll.result.length > 0) {
           fetch('/api/transaction/bulk', {
             method: 'POST',
@@ -77,4 +73,5 @@ function checkDatabase() {
     };
 }
 
+//check to see if online, if online, run checkDatabase
 window.addEventListener('online', checkDatabase);
