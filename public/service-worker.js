@@ -10,6 +10,7 @@ const CACHE_NAME = APP_PREFIX + VERSION;
 
 const APP_PREFIX = 
 
+// install event to cache files
 self.addEventListener('install', function (e) {
     e.waitUntil(
         caches.open(CACHE_NAME).then(function (cache) {
@@ -19,6 +20,7 @@ self.addEventListener('install', function (e) {
     )
 })
 
+//activates event
 self.addEventListener('activate', function(e) {
     e.waitUntil(
         caches.keys().then(function (keyList) {
@@ -39,6 +41,7 @@ self.addEventListener('activate', function(e) {
     )
 });
 
+// fetches event
 self.addEventListener('fetch', function (e) {
     console.log('fetch request : ' + e.request.url)
     e.respondWith(
